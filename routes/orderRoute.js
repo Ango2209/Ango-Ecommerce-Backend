@@ -7,7 +7,7 @@ const {
   emptyCart,
   applyCoupon,
   createOrder,
-  getOrders,
+  getOrderByUserId,
   updateOrderStatus,
   getAllOrders,
 } = require("../controller/orderController");
@@ -25,5 +25,5 @@ router.post("/apply-coupon", authMiddleware, applyCoupon);
 router.post("/cash-order", authMiddleware, createOrder);
 router.delete("/empty-cart", authMiddleware, emptyCart);
 router.get("/cart", authMiddleware, getUserCart);
-router.get("/get-ordersByAnUser", authMiddleware, getOrders);
+router.get("/get-ordersByAnUser/:id", authMiddleware, getOrderByUserId);
 module.exports = router;

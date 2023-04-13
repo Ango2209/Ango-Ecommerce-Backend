@@ -1,11 +1,9 @@
 const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
-const { generateToken } = require("../config/jwtToken");
+
 const validateMongoDbId = require("../utils/validateMongoDbId");
-const { generateRefreshToken } = require("../config/refreshToken");
-const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
-const { getOne, getAll, deleteOne } = require("./handlerFactory");
+
+const { getAll } = require("./handlerFactory");
 const Cart = require("../models/cartModel");
 const Product = require("../models/productModel");
 const Coupon = require("../models/couponModel");
@@ -145,19 +143,20 @@ const createOrder = asyncHandler(async (req, res) => {
   }
 });
 
-const getOrders = asyncHandler(async (req, res) => {
-  const { _id } = req.user;
-  validateMongoDbId(_id);
+const getOrderByUserId = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  validateMongoDbId(id);
+  console.log(id);
   try {
-    const userOrder = await Order.findOne({ orderBy: _id })
+    const userorders = await Order.findOne({ orderby: id })
       .populate("products.product")
+      .populate("orderBy")
       .exec();
-    res.json(userOrder);
+    res.json(userorders);
   } catch (error) {
     throw new Error(error);
   }
 });
-
 const updateOrderStatus = asyncHandler(async (req, res) => {
   const { status } = req.body;
   const { id } = req.params;
@@ -185,7 +184,7 @@ module.exports = {
   emptyCart,
   applyCoupon,
   createOrder,
-  getOrders,
+  getOrderByUserId,
   updateOrderStatus,
   getAllOrders,
 };
