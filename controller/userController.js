@@ -47,7 +47,6 @@ const loginUserController = asyncHandler(async (req, res) => {
   } else {
     throw new Error("Invalid Credentials");
   }
-  console.log(email, password);
 });
 
 //Admin login
@@ -78,7 +77,6 @@ const loginAdmin = asyncHandler(async (req, res) => {
   } else {
     throw new Error("Invalid Credentials");
   }
-  console.log(email, password);
 });
 //Save User Address
 const saveAddress = asyncHandler(async (req, res, next) => {

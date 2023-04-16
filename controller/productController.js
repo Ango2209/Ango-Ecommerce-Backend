@@ -27,11 +27,11 @@ const getAllProduct = getAll(Product);
 
 const addToWishList = asyncHandler(async (req, res) => {
   const { _id } = req.user;
-  console.log(_id);
+
   const { prodId } = req.body;
   try {
     const user = await User.findById(_id);
-    console.log(user);
+
     const alreadyAdded = user.wishlist.find((id) => id.toString() === prodId);
     if (alreadyAdded) {
       let user = await User.findByIdAndUpdate(
@@ -123,7 +123,7 @@ const uploadImages = asyncHandler(async (req, res) => {
     for (const file of files) {
       const { path } = file;
       const newpath = await uploader(path);
-      console.log(newpath);
+
       urls.push(newpath);
       fs.unlinkSync(path);
     }
