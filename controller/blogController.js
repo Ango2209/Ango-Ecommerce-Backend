@@ -40,7 +40,7 @@ const likeBlog = asyncHandler(async (req, res) => {
   //Find the blog which you want to be liked
   const blog = await Blog.findById(blogId);
   // find the login user
-  const loginUserId = req?.user?._id;
+  const loginUserId = req.user?._id;
   //find if the user has liked the blog
   const isLiked = blog?.isLiked;
   // find the user if he disliked the blog
@@ -87,7 +87,7 @@ const dislikeBlog = asyncHandler(async (req, res) => {
   //Find the blog which you want to be liked
   const blog = await Blog.findById(blogId);
   // find the login user
-  const loginUserId = req?.user?._id;
+  const loginUserId = req.user?._id;
   //find if the user has liked the blog
   const isDisliked = blog?.isDisliked;
   // find the user if he disliked the blog
