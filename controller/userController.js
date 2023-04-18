@@ -54,7 +54,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   //check if user exist or not
   const findAdmin = await User.findOne({ email });
-  if (findAdmin.role !== "admin") throw new Error("Not Authorised");
+  if (findAdmin.role !== "admin") throw new Error("Not Authorized");
   if (findAdmin && (await findAdmin.isPasswordMatched(password))) {
     const refreshToken = await generateRefreshToken(findAdmin?._id);
     const updateAdmin = await User.findByIdAndUpdate(
@@ -251,7 +251,7 @@ const resetPassword = asyncHandler(async (req, res) => {
 });
 
 const getWishList = asyncHandler(async (req, res) => {
-  const { _id } = req.user;
+  const { _id } = req?.user;
   try {
     const findUser = await User.findById(_id).populate("wishlist");
     res.json(findUser);
