@@ -22,9 +22,25 @@ const createProduct = asyncHandler(async (req, res) => {
 const deleteProduct = deleteOne(Product);
 const updateProduct = updateOne(Product);
 
-const getProduct = getOne(Product);
-const getAllProduct = getAll(Product);
+const getProduct = asyncHandler(async (req, res, next) => {
+  const doc = await Product.findById(req.params.id).populate("color").populate({
+    path: "ratings.postedBy",
+    model: "User", // Replace 'User' with the actual name of your User model
+    select: "-cart -wishlist -refreshToken -mobile -password",
+  });
 
+  if (!doc) {
+    return next(new AppError("No document found with that ID", 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      data: doc,
+    },
+  });
+});
+const getAllProduct = getAll(Product);
 const addToWishList = asyncHandler(async (req, res) => {
   const { _id } = req.user;
 
@@ -96,6 +112,7 @@ const rating = asyncHandler(async (req, res) => {
       );
     }
     const getProduct = await Product.findById(prodId);
+
     let totalRating = getProduct.ratings.length;
     let ratingsum = getProduct.ratings
       .map((item) => item.star)

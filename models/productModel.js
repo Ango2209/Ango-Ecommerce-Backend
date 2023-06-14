@@ -27,11 +27,10 @@ const ProductSchema = new mongoose.Schema(
       required: true,
     },
     brand: { type: String },
-    quantity: { type: Number, required: true, select: false },
+    quantity: { type: Number, required: true },
     sold: {
       type: Number,
       default: 0,
-      select: false,
     },
     image: [
       {
@@ -39,7 +38,7 @@ const ProductSchema = new mongoose.Schema(
         url: String,
       },
     ],
-    color: [],
+    color: [{ type: mongoose.Schema.Types.ObjectId, ref: "Color" }],
     tags: String,
     ratings: [
       {

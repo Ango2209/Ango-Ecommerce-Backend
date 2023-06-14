@@ -14,8 +14,10 @@ const createUser = asyncHandler(async (req, res) => {
   const findUser = await User.findOne({ email: email });
   if (!findUser) {
     //create a new user
-    const newUser = User.create(req.body);
-    res.json(newUser);
+    const newUser = await User.create(req.body);
+
+    console.log(newUser);
+    res.status(201).json(newUser);
   } else {
     throw new Error("User Already Exists");
   }
@@ -100,6 +102,25 @@ const saveAddress = asyncHandler(async (req, res, next) => {
 const getAllUser = getAll(User);
 //get a single user
 const getUser = getOne(User);
+
+const getCurrentUser = asyncHandler(async (req, res, next) => {
+  const { _id } = req.user;
+  validateMongoDbId(_id);
+  console.log(req.user);
+  try {
+    const doc = await User.findById(_id);
+    if (!doc) {
+      return next(new AppError("No document found with that ID", 404));
+    }
+    res.status(200).json({
+      status: "success",
+      data: doc,
+    });
+  } catch (err) {
+    lo(err);
+  }
+});
+
 //Delete a User
 const deleteUser = deleteOne(User);
 //handle refresh Token
@@ -220,7 +241,8 @@ const forgotPasswordToken = asyncHandler(async (req, res) => {
   try {
     const token = await user.createPasswordResetToken();
     await user.save();
-    const resetURL = `Hi, Please follow this link to reset Your Password. This link is valid till 10 minutes from now. <a href='http://localhost:5000/api/user/reset-password/${token}>Click Here</a>`;
+    const resetURL = `Hi, Please follow this link to reset Your Password. This link is valid till 10 minutes from now. <a href='http://localhost:3000/reset-password/${token}'>Click Here</a>`;
+
     const data = {
       to: email,
       text: "Hey User",
@@ -277,4 +299,5 @@ module.exports = {
   loginAdmin,
   getWishList,
   saveAddress,
+  getCurrentUser,
 };

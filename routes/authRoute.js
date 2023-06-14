@@ -17,11 +17,13 @@ const {
   loginAdmin,
   getWishList,
   saveAddress,
+  getCurrentUser,
 } = require("../controller/userController");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleWare");
 
 router.post("/register", createUser);
 router.put("/save-address", authMiddleware, saveAddress);
+router.get("/current-user", authMiddleware, getCurrentUser);
 router.post("/forgot-password-token", forgotPasswordToken);
 router.put("/reset-password/:token", resetPassword);
 router.post("/login", loginUserController);
@@ -32,7 +34,7 @@ router.get("/wishlist", authMiddleware, getWishList);
 router.get("/refresh", handleRefreshToken);
 router.put("/edit-user", authMiddleware, updateUser);
 router.get("/logout", logout);
-router.get("/:id", authMiddleware, isAdmin, getUser);
+router.get("/:id", authMiddleware, getUser);
 router.delete("/:id", deleteUser);
 router.put("/block-user/:id", authMiddleware, isAdmin, blockUser);
 router.put("/unblocked-user/:id", authMiddleware, isAdmin, unBlockUser);
