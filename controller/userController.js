@@ -16,7 +16,6 @@ const createUser = asyncHandler(async (req, res) => {
     //create a new user
     const newUser = await User.create(req.body);
 
-    console.log(newUser);
     res.status(201).json(newUser);
   } else {
     throw new Error("User Already Exists");
@@ -106,7 +105,7 @@ const getUser = getOne(User);
 const getCurrentUser = asyncHandler(async (req, res, next) => {
   const { _id } = req.user;
   validateMongoDbId(_id);
-  console.log(req.user);
+
   try {
     const doc = await User.findById(_id);
     if (!doc) {

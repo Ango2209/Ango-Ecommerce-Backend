@@ -4,7 +4,7 @@ const MongoClient = require("mongodb").MongoClient;
 const main = async () => {
   const url =
     "mongodb+srv://Anhngo2208:Anhngole.123@cluster0.onhfeyv.mongodb.net/Ango-Ecommerce?retryWrites=true&w=majority";
-  console.log(url);
+
   const client = new MongoClient(url);
   try {
     await client.connect();
